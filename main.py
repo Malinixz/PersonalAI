@@ -1,8 +1,8 @@
 from Core.ExerciseManager import ExerciseManager
 
 def main():
-    exercise_type = input("Escolha o exercício ('plank' ou 'abdominal_rower'): ").strip().lower()
-    if exercise_type not in ["plank", "abdominal_rower"]:
+    exercise_type = input("Escolha o exercício ('plank', 'abdominal_rower', 'push-up'): ").strip().lower()
+    if exercise_type not in ["plank", "abdominal_rower","push-up"]:
         print("Erro: Exercício não suportado. Escolha entre 'plank' ou 'abdominal_rower'.")
         return
 
