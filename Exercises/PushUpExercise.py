@@ -7,6 +7,7 @@ class PushUpExercise(Exercise):
         self.last_position = False  
         self.last_print_time = 0
         self.print_interval = 0.5
+        self.calories = 0.6    # Calorias por repetição
 
     def get_exercise_name(self):
         return "Flexão de Braço"

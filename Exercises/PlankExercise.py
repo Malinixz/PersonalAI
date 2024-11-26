@@ -26,4 +26,4 @@ class PlankExercise(Exercise):
         elif not knees_correct:
             return False, "Mantenha as pernas retas"
         
-        return True, "Posição correta!"
+        return True, "Posicao correta!"

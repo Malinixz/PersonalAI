@@ -30,7 +30,7 @@ def main():
     use_camera = video_path == ""
 
     # Escolha de modos apenas se a câmera for usada
-    if use_camera:
+    if choice != "3" and use_camera:
         print("\nEscolha o modo:")
         print("1- Por tempo (máximo de repetições em 30s)")
         print("2- Por repetições (X repetições no menor tempo possível)")

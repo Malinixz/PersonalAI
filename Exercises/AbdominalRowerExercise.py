@@ -7,6 +7,7 @@ class AbdominalRowerExercise(Exercise):
         self.excentric = False  # Para evitar contar múltiplas vezes a mesma posição
         self.last_print_time = 0
         self.print_interval = 0.5
+        self.calories = 0.4    # Calorias por repetição
 
     def get_exercise_name(self):
         return "Abdominal Remador"
@@ -71,7 +72,7 @@ class AbdominalRowerExercise(Exercise):
 
             # Feedback para a tela
             if final_position:
-                return True, f"CORRETO! - Repeticoes: {self.repetitions}"
+                return True, f"Repeticoes: {self.repetitions}"
             else:
                 return False, f"Repeticoes: {self.repetitions}"
 

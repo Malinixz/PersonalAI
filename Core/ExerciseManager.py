@@ -2,6 +2,7 @@ import cv2
 import mediapipe as mp
 from Factories.ExerciseFactory import ExerciseFactory
 import time
+import numpy as np
 
 class ExerciseManager:
     def __init__(self, exercise_type, video_path=0, mode="default", total_repetitions=None):
@@ -19,8 +20,6 @@ class ExerciseManager:
             return
 
         start_time = time.time()
-        repetitions = 0
-        calories_burned = 0
         max_duration = 30 if self.mode == "time" else None
 
         with self.mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
@@ -41,10 +40,6 @@ class ExerciseManager:
                     correct_position, feedback = self.exercise.check_position(results.pose_landmarks)
                     feedback_color = (0, 255, 0) if correct_position else (0, 0, 255)
                     cv2.putText(image, feedback, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, feedback_color, 2, cv2.LINE_AA)
-    
-                    if correct_position:
-                        repetitions += 1
-                        calories_burned += 0.15  # Calorias estimadas por repetição (ajustável)
 
                 cv2.imshow(self.exercise.get_exercise_name(), image)
 
@@ -54,16 +49,22 @@ class ExerciseManager:
                 elapsed_time = time.time() - start_time
                 if self.mode == "time" and elapsed_time >= max_duration:
                     break
-                if self.mode == "repetitions" and repetitions >= self.total_repetitions:
+                if self.mode == "repetitions" and self.exercise.repetitions >= self.total_repetitions:
                     break
+
+        elapsed_time = time.time() - start_time
+        final_frame = self.display_final_metrics(self.exercise.repetitions, elapsed_time)
+
+        # Exibe o frame final com as métricas por 5 segundos
+        cv2.imshow("Resumo do Exercício", final_frame)
+        cv2.waitKey(10000)
 
         cap.release()
         cv2.destroyAllWindows()
 
-        elapsed_time = time.time() - start_time
-        self.show_metrics(repetitions, elapsed_time, calories_burned)
+    def display_final_metrics(self, repetitions, elapsed_time):
+        final_frame = (np.ones((480, 640, 3), dtype=np.uint8))  # Branco como fundo
 
-    def show_metrics(self, repetitions, elapsed_time, calories_burned):
         if self.mode == "time":
             reps_per_second = repetitions / 30
         elif elapsed_time > 0:
@@ -71,10 +72,18 @@ class ExerciseManager:
         else:
             reps_per_second = 0
 
-        print("\n" + "="*50)
-        print(f"Métricas do exercício:")
-        print(f"Repetições totais: {repetitions}")
-        print(f"Tempo total: {elapsed_time:.2f} segundos")
-        print(f"Calorias gastas: {calories_burned:.2f} kcal")
-        print(f"Repetições por segundo: {reps_per_second:.2f}")
-        print("="*50)
+        calories_burned = self.exercise.calories * repetitions
+        metrics = {
+            "Repeticoes totais": repetitions,
+            "Tempo total": f"{elapsed_time:.2f} segundos",
+            "Calorias gastas": f"{calories_burned:.2f} kcal",
+            "Repeticoes por segundo": f"{reps_per_second:.2f}"
+        }
+
+        y_offset = 50
+        for key, value in metrics.items():
+            text = f"{key}: {value}"
+            cv2.putText(final_frame, text, (10, y_offset), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+            y_offset += 30
+
+        return final_frame
