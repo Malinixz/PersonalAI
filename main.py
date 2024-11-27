@@ -30,32 +30,38 @@ def main():
     use_camera = video_path == ""
 
     # Escolha de modos apenas se a câmera for usada
-    if choice != "3" and use_camera:
-        print("\nEscolha o modo:")
-        print("1- Por tempo (máximo de repetições em 30s)")
-        print("2- Por repetições (X repetições no menor tempo possível)")
-        mode_choice = input("Digite o número correspondente ao modo: ").strip()
-
-        if mode_choice == "1":
+    if use_camera:
+        if choice == "3":
+            print("\nVocê escolheu 'Abdominal Prancha'. O modo disponível é 'tempo'.")
             mode = "time"
-        elif mode_choice == "2":
-            mode = "repetitions"
-        else:
-            print("Erro: Modo inválido. Por favor, escolha uma opção válida.")
-            return
-
-        if mode == "repetitions":
-            total_repetitions = int(input("Digite o número de repetições que deseja completar: ").strip())
-        else:
+            max_duration = int(input("Digite o tempo desejado para realizar o exercício (em segundos): ").strip())
             total_repetitions = None
+        else:
+            print("\nEscolha o modo:")
+            print("1- Por tempo (máximo de repetições em 30s)")
+            print("2- Por repetições (X repetições no menor tempo possível)")
+            mode_choice = input("Digite o número correspondente ao modo: ").strip()
+
+            if mode_choice == "1":
+                mode = "time"
+                total_repetitions = None
+                max_duration = int(input("Digite o tempo desejado para realizar o exercício (em segundos): ").strip())
+            elif mode_choice == "2":
+                mode = "repetitions"
+                total_repetitions = int(input("Digite o número de repetições que deseja completar: ").strip())
+                max_duration = None
+            else:
+                print("Erro: Modo inválido. Por favor, escolha uma opção válida.")
+                return
     else:
         # Se não for câmera, usamos um modo padrão (vídeo sem tempo/repetições)
         mode = "default"
         total_repetitions = None
+        max_duration = None
 
     video_path = 0 if use_camera else video_path
 
-    exercise_manager = ExerciseManager(exercise_type, video_path, mode, total_repetitions)
+    exercise_manager = ExerciseManager(exercise_type, video_path, mode, total_repetitions, max_duration)
     try:
         exercise_manager.run()
     except KeyboardInterrupt:

@@ -5,13 +5,14 @@ import time
 import numpy as np
 
 class ExerciseManager:
-    def __init__(self, exercise_type, video_path=0, mode="default", total_repetitions=None):
+    def __init__(self, exercise_type, video_path=0, mode="default", total_repetitions=None, max_duration=None):
         self.exercise = ExerciseFactory.create_exercise(exercise_type)
         self.mp_pose = mp.solutions.pose
         self.mp_drawing = mp.solutions.drawing_utils
         self.video_path = video_path
         self.mode = mode
         self.total_repetitions = total_repetitions
+        self.max_duration = max_duration
 
     def run(self):
         cap = cv2.VideoCapture(self.video_path)
@@ -20,7 +21,9 @@ class ExerciseManager:
             return
 
         start_time = time.time()
-        max_duration = 30 if self.mode == "time" else None
+
+        # Usa o tempo personalizado caso no modo "tempo"
+        max_duration = self.max_duration if self.mode == "time" else None
 
         with self.mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
             while cap.isOpened():
@@ -55,7 +58,7 @@ class ExerciseManager:
         elapsed_time = time.time() - start_time
         final_frame = self.display_final_metrics(self.exercise.repetitions, elapsed_time)
 
-        # Exibe o frame final com as métricas por 5 segundos
+        # Exibe o frame final com as métricas por 10 segundos
         cv2.imshow("Resumo do Exercício", final_frame)
         cv2.waitKey(10000)
 
@@ -63,16 +66,14 @@ class ExerciseManager:
         cv2.destroyAllWindows()
 
     def display_final_metrics(self, repetitions, elapsed_time):
-        final_frame = (np.ones((480, 640, 3), dtype=np.uint8))  # Branco como fundo
+        final_frame = np.ones((480, 640, 3), dtype=np.uint8)  # Branco como fundo
 
-        if self.mode == "time":
-            reps_per_second = repetitions / 30
-        elif elapsed_time > 0:
+        if elapsed_time > 0:
             reps_per_second = repetitions / elapsed_time
         else:
             reps_per_second = 0
 
-        calories_burned = self.exercise.calories * repetitions
+        calories_burned = self.exercise.get_calories(elapsed_time)
         metrics = {
             "Repeticoes totais": repetitions,
             "Tempo total": f"{elapsed_time:.2f} segundos",

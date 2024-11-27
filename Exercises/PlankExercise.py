@@ -1,8 +1,18 @@
+import time
 from Exercises.IExercise import Exercise
 
 class PlankExercise(Exercise):
+    def __init__(self):
+        self.repetitions = 0  # Zero, pois é baseado em tempo
+        self.calories = 0.2   # Calorias por segundo
+        self.last_print_time = 0
+        self.print_interval = 0.5
+
     def get_exercise_name(self):
         return "Prancha Abdominal"
+    
+    def get_calories(self, elapsed_time):
+        return self.calories * elapsed_time
 
     def check_position(self, landmarks):
         # Calculo dos angulos
@@ -14,9 +24,19 @@ class PlankExercise(Exercise):
         left_knee_angle = self.find_angle(landmarks.landmark, 24, 26, 28)
         
         # Verifica se angulos estao corretos
-        elbows_correct = (85 <= elbow_angle <= 115) or (85 <= left_elbow_angle <= 115)
+        elbows_correct = (85 <= elbow_angle <= 120) or (85 <= left_elbow_angle <= 120)
         hips_correct = (hip_angle >= 115) or (left_hip_angle >= 115)
         knees_correct = (knee_angle >= 120) or (left_knee_angle >= 120)
+
+        # Prints para acompanhamento
+        current_time = time.time()
+        if current_time - self.last_print_time >= self.print_interval:
+            print("\n" + "="*50)
+            print(f"Elbow Angle: {elbow_angle:.2f}, Left Elbow Angle: {left_elbow_angle:.2f}")
+            print(f"Hip Angle: {hip_angle:.2f}, Left Hip Angle: {left_hip_angle:.2f}")
+            print(f"Knee Angle: {knee_angle:.2f}, Left Knee Angle: {left_knee_angle:.2f}")
+            print("="*50)
+            self.last_print_time = current_time
 
         # Retorno
         if not elbows_correct:

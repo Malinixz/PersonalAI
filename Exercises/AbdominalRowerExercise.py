@@ -14,6 +14,9 @@ class AbdominalRowerExercise(Exercise):
 
     def is_within_range(self, value, min_val, max_val):
         return min_val <= value <= max_val
+    
+    def get_calories(self, elapsed_time):
+        return self.calories * self.repetitions
 
     def check_position(self, landmarks):
         try:

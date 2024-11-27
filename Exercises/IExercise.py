@@ -24,3 +24,7 @@ class Exercise(ABC):
         if angle > 180:
             angle = 360 - angle
         return angle
+    
+    @abstractmethod
+    def get_calories(self, elapsed_time):
+        pass
