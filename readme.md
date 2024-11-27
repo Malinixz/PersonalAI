@@ -1,27 +1,85 @@
 # Sistema de Análise de Postura para Exercícios
 
-Este sistema analisa a postura do usuário durante a execução de exercícios físicos, oferecendo feedback em tempo real para garantir que a posição esteja correta. Ele utiliza a biblioteca MediaPipe para detecção de pontos corporais e o OpenCV para capturar e exibir os frames de vídeo.
+Este sistema realiza análise de postura em tempo real para diferentes exercícios físicos, garantindo que os movimentos sejam executados corretamente. Ele utiliza a biblioteca MediaPipe para rastreamento corporal e OpenCV para captura e exibição de vídeo.
 
 ## Funcionalidades
 
-- **Análise de postura**: Verifica a posição de diferentes partes do corpo e calcula ângulos entre articulações para determinar se a postura está correta.
-- **Feedback em tempo real**: Exibe mensagens de feedback sobre o posicionamento dos cotovelos, quadris e joelhos para garantir uma forma correta.
-- **Arquitetura extensível**: Permite a criação de diferentes exercícios usando uma fábrica (`ExerciseFactory`) que instancia o exercício desejado, possibilitando a adição de novos exercícios facilmente.
+- **Análise de postura automatizada**:
+  - Verifica ângulos corporais entre articulações em tempo real.
+  - Identifica desvios de postura e orienta ajustes.
+- **Feedback em tempo real**:
+  - Mensagens visuais e métricas sobre desempenho.
+  - Destaque de erros como desalinhamento dos cotovelos, quadris e joelhos.
+- **Arquitetura modular e extensível**:
+  - Exercícios definidos como classes especializadas.
+  - Fácil integração de novos exercícios via `ExerciseFactory`.
+- **Métricas detalhadas ao final**:
+  - Total de repetições realizadas.
+  - Tempo total e eficiência por repetição.
+  - Calorias estimadas durante o exercício.
 
 ## Estrutura do Projeto
 
-- **Core**: Contém o `ExerciseManager`, responsável por gerenciar a execução do exercício e capturar vídeo.
-- **Exercises**: Define cada exercício específico. Atualmente, inclui:
-  - `PlankExercise`: Exercício de prancha abdominal, verificando ângulos dos cotovelos, quadris e joelhos.
-  - `IExercise`: Interface base para todos os exercícios, definindo métodos obrigatórios como `check_position` e `get_exercise_name`.
-- **Factories**: Contém o `ExerciseFactory`, que cria instâncias de exercícios com base no tipo solicitado.
-- **Utils**: Funções utilitárias, como `find_angle`, que calcula ângulos entre três pontos dados, usada para verificar alinhamentos corporais.
-  
+### Diretórios Principais
+
+1. **Core**:
+   - Contém o `ExerciseManager`, gerenciando:
+     - Fluxo de entrada de vídeo (câmera ou arquivos).
+     - Modos de execução (tempo, repetições ou padrão).
+     - Interação com exercícios específicos.
+2. **Exercises**:
+   - Classes para diferentes exercícios com validação de posturas:
+     - **`PlankExercise`**: Verifica alinhamento em pranchas abdominais.
+     - **`PushUpExercise`**: Monitora flexões de braço, focando em ângulos dos cotovelos e alinhamento corporal.
+     - **`AbdominalRowerExercise`**: Analisa ângulos para exercícios abdominais remadores.
+   - Todas implementam a interface base `Exercise`.
+3. **Factories**:
+   - `ExerciseFactory`:
+     - Criação dinâmica de exercícios com base no tipo informado.
+4. **Utils**:
+   - Função `find_angle`: Cálculo preciso de ângulos entre três pontos, base para validação de posturas.
+
+## Detalhes de Implementação
+
+### Classes Principais
+
+#### `ExerciseManager`
+
+Gerencia a captura de vídeo, análise de postura e controle do fluxo principal do programa.
+
+- **Métodos Chave**:
+  - `run()`: Captura frames e delega a validação de posturas à classe de exercício ativa.
+  - `display_final_metrics()`: Exibe estatísticas detalhadas no término do exercício.
+
+#### `Exercise`
+
+Interface abstrata base para todos os exercícios.
+
+- **Métodos Obrigatórios**:
+  - `check_position()`: Valida a postura com base nos landmarks detectados.
+  - `get_exercise_name()`: Retorna o nome do exercício.
+  - `find_angle()`: Calcula ângulos entre três pontos.
+
+#### `ExerciseFactory`
+
+Fábrica responsável por instanciar exercícios com base em strings identificadoras.
+
+- Exercícios suportados:
+  - `"plank"`: Prancha abdominal.
+  - `"push-up"`: Flexões de braço.
+  - `"abdominal_rower"`: Abdominais remadores.
+
+### Modos de Execução
+
+- **Tempo**: Avaliação de posturas durante um intervalo definido.
+- **Repetições**: Contagem de movimentos corretos até atingir uma meta.
+- **Padrão**: Análise baseada em um vídeo sem contagem ou limites.
+
 ## Instalação
 
 ### Pré-requisitos
 
-Certifique-se de que você tem o Python 3.x instalado e as bibliotecas necessárias (open cv e mediapipe):
-
-```bash
-pip install opencv-python mediapipe
+- Python 3.8 ou superior.
+- Bibliotecas necessárias:
+  ```bash
+  pip install opencv-python mediapipe numpy
