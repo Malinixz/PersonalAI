@@ -47,8 +47,8 @@ class PushUpExercise(Exercise):
 
             # Lógica da posição alta
             position_up = (
-                self.is_within_range(left_elbow_angle, 160, 180) and  # Braços esticados
-                self.is_within_range(right_elbow_angle, 160, 180) and
+                self.is_within_range(left_elbow_angle, 120, 180) and  # Braços esticados
+                self.is_within_range(right_elbow_angle, 120, 180) and
                 self.is_within_range(left_body_alignment, 155, 190) and  # Corpo alinhado
                 self.is_within_range(right_body_alignment, 155, 190)
             )
