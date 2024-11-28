@@ -22,11 +22,3 @@ class ExerciseFactory:
             return PushUpExercise()
         else:
             raise ValueError(f"Exercício não suportado: {exercise_type}")
-        
-
-
-
-
-
-
-

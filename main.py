@@ -47,7 +47,7 @@ def main():
             total_repetitions = None
         else:
             print("\nEscolha o modo:")
-            print("1- Por tempo (máximo de repetições em 30s)")
+            print("1- Por tempo (máximo de repetições em X segundos)")
             print("2- Por repetições (X repetições no menor tempo possível)")
             mode_choice = input("Digite o número correspondente ao modo: ").strip()
 
