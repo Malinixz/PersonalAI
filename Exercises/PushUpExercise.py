@@ -1,3 +1,12 @@
+# Sistema de Análise de Postura para Exercícios
+#
+# Integrantes:
+#   João Victor Ferrareis Ribeiro
+#   Mateus Lannes Cunha
+#   Miguel Malini Louvem
+#   Perseu Fernandes Machado de Oliveira
+#
+
 from Exercises.IExercise import Exercise  
 import time
 

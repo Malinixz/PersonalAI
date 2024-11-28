@@ -1,3 +1,12 @@
+# Sistema de Análise de Postura para Exercícios
+#
+# Integrantes:
+#   João Victor Ferrareis Ribeiro
+#   Mateus Lannes Cunha
+#   Miguel Malini Louvem
+#   Perseu Fernandes Machado de Oliveira
+#
+
 from abc import ABC, abstractmethod
 import math
 import mediapipe as mp
