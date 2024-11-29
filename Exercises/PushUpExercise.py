@@ -20,7 +20,7 @@ class PushUpExercise(Exercise):
         self.calories = 0.6    # Calorias por repetição
 
     def get_exercise_name(self):
-        return "Flexão de Braço"
+        return "Flexao de Braco"
 
     def is_within_range(self, value, min_val, max_val):
         return min_val <= value <= max_val
@@ -76,7 +76,7 @@ class PushUpExercise(Exercise):
 
             # Feedback para a tela
             if position_up:
-                return True, f"CORRETO! - Repeticoes: {self.repetitions}"
+                return True, f"Repeticoes: {self.repetitions}"
             elif position_down:
                 return False, f"Repeticoes: {self.repetitions}"
             else:

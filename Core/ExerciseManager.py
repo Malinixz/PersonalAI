@@ -23,7 +23,7 @@ class ExerciseManager:
         start_countdown = time.time()
         
         with self.mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
-            while time.time() - start_countdown < 3:
+            while time.time() - start_countdown < 5:
                 success, image = cap.read()
                 if not success:
                     print("Não foi possível receber o frame da câmera.")
@@ -39,7 +39,7 @@ class ExerciseManager:
                     self.mp_drawing.draw_landmarks(image, results.pose_landmarks, self.mp_pose.POSE_CONNECTIONS)
 
                 # Calcula o tempo restante do countdown
-                time_left = 3 - int(time.time() - start_countdown)
+                time_left = 5 - int(time.time() - start_countdown)
                 
                 # Adiciona o texto de countdown na imagem
                 cv2.putText(
@@ -56,7 +56,7 @@ class ExerciseManager:
                 # Adiciona instruções
                 cv2.putText(
                     image, 
-                    f"Exercício: {self.exercise.get_exercise_name()}", 
+                    f"Exercicio: {self.exercise.get_exercise_name()}", 
                     (50, 200), 
                     cv2.FONT_HERSHEY_SIMPLEX, 
                     1, 
@@ -133,7 +133,7 @@ class ExerciseManager:
         final_frame = self.display_final_metrics(self.exercise.repetitions, self.total_elapsed_time)
 
         # Exibe o frame final com as métricas por 10 segundos
-        cv2.imshow("Resumo do Exercício", final_frame)
+        cv2.imshow("Resumo do Exercicio", final_frame)
         cv2.waitKey(10000)
 
         cap.release()
