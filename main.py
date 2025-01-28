@@ -8,32 +8,19 @@
 #
 
 from Core.ExerciseManager import ExerciseManager
+from Core.VideoProcessor import VideoProcessor
+from Factories.ExerciseFactory import ExerciseFactory
+from View.Menu import show_exercise_menu
 
 def main():
     
 
-    print("Escolha sua opção:\n")
-    print("1- Abdominal Remador")
-    print("2- Flexão de Braços")
-    print("3- Abdominal Prancha")
-    print("4- Sair")
-    choice = input("Digite o número correspondente à sua escolha: ").strip()
-
-    if choice == "4":
+    choice = show_exercise_menu()
+        
+    # Verificar se o usuário escolheu "Sair"
+    if choice == "0":
         print("Saindo...")
         return
-
-    exercise_type_map = {
-        "1": "abdominal_rower",
-        "2": "push-up",
-        "3": "plank"
-    }
-
-    exercise_type = exercise_type_map.get(choice)
-    if not exercise_type:
-        print("Erro: Escolha inválida. Por favor, escolha uma opção válida.")
-        return
-
 
     video_path = input("Digite o caminho do vídeo (deixe vazio para usar a webcam): ").strip()
     use_camera = video_path == ""
@@ -70,7 +57,10 @@ def main():
 
     video_path = 0 if use_camera else video_path
 
-    exercise_manager = ExerciseManager(exercise_type, video_path, mode, total_repetitions, max_duration)
+    # exercise_manager = ExerciseManager(choice, video_path, mode, total_repetitions, max_duration)
+    
+    exercise = ExerciseFactory.create_exercise(choice)
+    exercise_manager = ExerciseManager(exercise, video_path, mode, total_repetitions, max_duration)
     try:
         exercise_manager.run()
     except KeyboardInterrupt:

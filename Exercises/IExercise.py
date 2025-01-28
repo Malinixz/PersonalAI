@@ -14,10 +14,6 @@ import mediapipe as mp
 # Classe base abstrata para exercícios
 class Exercise(ABC):
     @abstractmethod
-    def check_position(self, landmarks):
-        pass
-
-    @abstractmethod
     def get_exercise_name(self):
         pass
 
