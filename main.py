@@ -56,8 +56,6 @@ def main():
         max_duration = None
 
     video_path = 0 if use_camera else video_path
-
-    # exercise_manager = ExerciseManager(choice, video_path, mode, total_repetitions, max_duration)
     
     exercise = ExerciseFactory.create_exercise(choice)
     exercise_manager = ExerciseManager(exercise, video_path, mode, total_repetitions, max_duration)

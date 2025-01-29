@@ -4,9 +4,9 @@ from Exercises.PushUpExercise import PushUpExercise
 
 class ExerciseFactory:
     _exercise_classes = {
-        "1": PlankExercise,
+        "1": PushUpExercise,
         "2": AbdominalRowerExercise,
-        "3": PushUpExercise,
+        "3": PlankExercise,
     }
 
     @staticmethod
@@ -26,7 +26,7 @@ class ExerciseFactory:
         Retorna uma lista de tuplas contendo os números e nomes dos exercícios suportados.
         """
         return [
-            ("1", "Abdominal Prancha"),
+            ("1", "Flexão de Braços"),
             ("2", "Abdominal Remador"),
-            ("3", "Flexão de Braços"),
+            ("3", "Abdominal Prancha"),
         ]

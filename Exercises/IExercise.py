@@ -33,3 +33,7 @@ class Exercise(ABC):
     @abstractmethod
     def get_calories(self, elapsed_time):
         pass
+
+    @abstractmethod
+    def check_position(self, landmarks):
+        pass

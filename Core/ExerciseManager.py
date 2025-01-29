@@ -10,7 +10,7 @@ class ExerciseManager:
         self.exercise = exercise
         self.video_processor = VideoProcessor(video_path, exercise.get_exercise_name())
         # self.mode = mode
-        self.stop_strategy = StrategyFactory.get_strategy(mode) # Estrategia para parar a analise postural
+        self.stop_strategy = StrategyFactory.get_strategy(mode, max_duration, max_repetitions) # Estrategia para parar a analise postural
         self.max_repetitions = max_repetitions
         self.max_duration = max_duration
         self.start_time = time.time()
